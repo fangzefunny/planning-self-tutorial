@@ -116,6 +116,18 @@ class grid_world:
         results = filter(self.passable, results)
         return results
     
+    def weight_neighbors(self, id):
+        (x, y) = id
+        neighbors = [(x+1, y), (x-1, y), (x, y-1), (x, y+1)] # E W N S
+        costs = [2, 2, 1, 10]
+        # see "Ugly paths" section for an explanation:
+        if (x + y) % 2 == 0: neighbors.reverse() # S N W E
+        results = {}
+        for i, n in enumerate(neighbors):
+            if self.in_bounds(n) and self.passable(n):
+                results[n] = costs[i]
+        return results
+    
 # -------------------------------------------------- #
 #               Stochstic:  frozen lake              #
 # -------------------------------------------------- #
